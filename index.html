@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Queen Box – Versión B | Tu caja organizadora profesional</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --blanco: #ffffff;
+      --lima: #c8e63a;
+      --lima-suave: #e8f5a0;
+      --oro: #c9a84c;
+      --oro-claro: #e8d5a0;
+      --gris-oscuro: #1a1a1a;
+      --gris-medio: #555555;
+      --gris-claro: #f5f5f0;
+      --sombra: rgba(201,168,76,0.18);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--blanco);
+      color: var(--gris-oscuro);
+      overflow-x: hidden;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(145deg, #fafaf7 0%, #f0f5e0 60%, #fef9ee 100%);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(200,230,58,0.18) 0%, transparent 70%);
+      top: -100px; right: -100px;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(201,168,76,0.12) 0%, transparent 70%);
+      bottom: -80px; left: -80px;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero-text {
+      padding: 80px 60px 80px 80px;
+      z-index: 1;
+      animation: fadeUp 0.9s ease both;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--lima);
+      color: var(--gris-oscuro);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 28px;
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 5vw, 5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      margin-bottom: 10px;
+      color: var(--gris-oscuro);
+    }
+
+    .hero h1 span {
+      color: var(--oro);
+      font-style: italic;
+    }
+
+    .hero-subtitle {
+      font-size: 1.1rem;
+      color: var(--gris-medio);
+      margin: 22px 0 40px;
+      line-height: 1.7;
+      font-weight: 300;
+      max-width: 420px;
+    }
+
+    .hero-cta {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .btn-whatsapp {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--gris-oscuro);
+      color: var(--blanco);
+      text-decoration: none;
+      padding: 18px 36px;
+      border-radius: 50px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+      box-shadow: 0 8px 30px rgba(26,26,26,0.18);
+    }
+
+    .btn-whatsapp:hover {
+      background: var(--oro);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px var(--sombra);
+    }
+
+    .btn-whatsapp svg { flex-shrink: 0; }
+
+    .escasez {
+      font-size: 0.82rem;
+      color: var(--oro);
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .escasez::before {
+      content: '♦';
+      font-size: 0.6rem;
+    }
+
+    /* Visual box illustration */
+    .hero-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 60px 40px 10px;
+      z-index: 1;
+      animation: fadeUp 0.9s 0.2s ease both;
+    }
+
+    .box-card {
+      background: var(--blanco);
+      border-radius: 24px;
+      box-shadow: 0 24px 80px rgba(201,168,76,0.15), 0 4px 20px rgba(0,0,0,0.06);
+      padding: 24px 24px 32px;
+      max-width: 480px;
+      width: 100%;
+      border: 1px solid rgba(201,168,76,0.2);
+      position: relative;
+    }
+
+    .box-card::before {
+      content: '✦';
+      position: absolute;
+      top: 22px; right: 28px;
+      color: var(--lima);
+      font-size: 1.2rem;
+    }
+
+    .product-img {
+      width: 100%;
+      height: auto;
+      max-height: 520px;
+      object-fit: contain;
+      object-position: center top;
+      border-radius: 16px;
+      margin-bottom: 24px;
+      display: block;
+      background: #0e0e0e;
+      padding: 0;
+    }
+
+    .price-tag {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 600;
+      color: var(--gris-oscuro);
+      margin-bottom: 6px;
+    }
+
+    .price-tag span {
+      font-size: 1rem;
+      color: var(--gris-medio);
+      font-weight: 300;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .price-note {
+      font-size: 0.78rem;
+      color: var(--gris-medio);
+      margin-bottom: 22px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      background: var(--gris-claro);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 0.72rem;
+      color: var(--gris-oscuro);
+      border: 1px solid transparent;
+    }
+
+    .tag.gold { border-color: var(--oro-claro); background: #fdf8ee; color: var(--oro); }
+    .tag.green { border-color: var(--lima); background: #f7fce0; }
+
+    /* ── BENEFICIOS ── */
+    .section { padding: 100px 80px; }
+
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--oro);
+      font-weight: 500;
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 60px;
+      max-width: 500px;
+    }
+
+    .section-title em { color: var(--oro); font-style: italic; }
+
+    .beneficios-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 28px;
+    }
+
+    .beneficio-card {
+      background: var(--gris-claro);
+      border-radius: 20px;
+      padding: 36px 28px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .beneficio-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 50px rgba(201,168,76,0.12);
+    }
+
+    .beneficio-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--lima), var(--oro));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s;
+    }
+
+    .beneficio-card:hover::after { transform: scaleX(1); }
+
+    .beneficio-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem;
+      font-weight: 300;
+      color: var(--lima);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+
+    .beneficio-card h3 {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 10px;
+      color: var(--gris-oscuro);
+    }
+
+    .beneficio-card p {
+      font-size: 0.88rem;
+      color: var(--gris-medio);
+      line-height: 1.6;
+    }
+
+    /* ── TESTIMONIOS ── */
+    .testimonios-section {
+      background: var(--gris-oscuro);
+      padding: 100px 80px;
+      color: var(--blanco);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .testimonios-section::before {
+      content: '"';
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 30rem;
+      color: rgba(200,230,58,0.04);
+      position: absolute;
+      top: -80px; left: 40px;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .testimonios-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-top: 60px;
+    }
+
+    .testimonio-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 36px;
+      transition: background 0.3s;
+    }
+
+    .testimonio-card:hover { background: rgba(255,255,255,0.08); }
+
+    .stars { color: var(--lima); font-size: 1rem; margin-bottom: 18px; letter-spacing: 3px; }
+
+    .testimonio-card blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-style: italic;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 20px;
+    }
+
+    .testimonio-autor {
+      font-size: 0.82rem;
+      color: var(--oro-claro);
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── FAQ ── */
+    .faq-section { padding: 100px 80px; background: var(--gris-claro); }
+
+    .faq-list { max-width: 680px; margin-top: 60px; }
+
+    .faq-item {
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      padding: 28px 0;
+    }
+
+    .faq-item summary {
+      list-style: none;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.98rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .faq-item summary::-webkit-details-marker { display: none; }
+
+    .faq-item summary::after {
+      content: '+';
+      font-size: 1.4rem;
+      font-weight: 300;
+      color: var(--oro);
+      flex-shrink: 0;
+      transition: transform 0.3s;
+    }
+
+    .faq-item[open] summary::after { transform: rotate(45deg); }
+
+    .faq-item p {
+      margin-top: 16px;
+      font-size: 0.9rem;
+      color: var(--gris-medio);
+      line-height: 1.7;
+    }
+
+    /* ── CTA FINAL ── */
+    .cta-section {
+      padding: 120px 80px;
+      text-align: center;
+      background: linear-gradient(145deg, #fafaf7, #f0f5e0);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(200,230,58,0.15) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .cta-section .section-label { text-align: center; }
+
+    .cta-section .section-title { max-width: 600px; margin: 0 auto 16px; text-align: center; }
+
+    .cta-desc {
+      font-size: 1rem;
+      color: var(--gris-medio);
+      margin-bottom: 48px;
+      line-height: 1.7;
+    }
+
+    .cta-btn-wrap {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      position: relative; z-index: 1;
+    }
+
+    .btn-whatsapp-large {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--gris-oscuro);
+      color: var(--blanco);
+      text-decoration: none;
+      padding: 22px 48px;
+      border-radius: 50px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+      box-shadow: 0 10px 40px rgba(26,26,26,0.2);
+    }
+
+    .btn-whatsapp-large:hover {
+      background: var(--oro);
+      transform: translateY(-3px);
+      box-shadow: 0 16px 50px var(--sombra);
+    }
+
+    .cta-garantia {
+      font-size: 0.8rem;
+      color: var(--gris-medio);
+      margin-top: 4px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--gris-oscuro);
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      padding: 40px 20px;
+      font-size: 0.8rem;
+    }
+
+    footer a { color: var(--lima); text-decoration: none; }
+
+
+    /* ── TEST B – Elementos llamativos ── */
+
+    /* Botón verde parpadeante */
+    @keyframes parpadeo {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(34,197,94,0.7); }
+      50% { opacity: 0.88; box-shadow: 0 0 24px 8px rgba(34,197,94,0.45); }
+    }
+    @keyframes parpadeo-large {
+      0%, 100% { opacity: 1; box-shadow: 0 10px 40px rgba(34,197,94,0.4); }
+      50% { opacity: 0.9; box-shadow: 0 10px 60px 6px rgba(34,197,94,0.65); }
+    }
+
+    .btn-whatsapp-b {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(135deg, #16a34a 0%, #22c55e 60%, #4ade80 100%);
+      color: #fff;
+      text-decoration: none;
+      padding: 18px 36px;
+      border-radius: 50px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      animation: parpadeo 1.6s ease-in-out infinite;
+      transition: transform 0.2s;
+      border: 2px solid rgba(255,255,255,0.25);
+    }
+    .btn-whatsapp-b:hover {
+      transform: translateY(-2px) scale(1.03);
+      animation: none;
+      box-shadow: 0 14px 40px rgba(34,197,94,0.55);
+    }
+
+    .btn-whatsapp-large-b {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      background: linear-gradient(135deg, #15803d 0%, #22c55e 60%, #4ade80 100%);
+      color: #fff;
+      text-decoration: none;
+      padding: 22px 48px;
+      border-radius: 50px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      animation: parpadeo-large 1.6s ease-in-out infinite;
+      transition: transform 0.2s;
+      border: 2px solid rgba(255,255,255,0.25);
+    }
+    .btn-whatsapp-large-b:hover {
+      transform: translateY(-3px) scale(1.03);
+      animation: none;
+      box-shadow: 0 18px 55px rgba(34,197,94,0.6);
+    }
+
+    /* Precio llamativo */
+    @keyframes shimmer-price {
+      0%   { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    .price-tag-b {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.6rem;
+      font-weight: 600;
+      line-height: 1;
+      margin-bottom: 4px;
+      background: linear-gradient(90deg, #b7881a, #f5c842, #c9a84c, #f5c842, #b7881a);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer-price 3s linear infinite;
+    }
+    .price-tag-b span {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      -webkit-text-fill-color: var(--gris-medio);
+    }
+
+    /* Escasez dorada parpadeante */
+    @keyframes glow-gold {
+      0%, 100% { text-shadow: 0 0 6px rgba(201,168,76,0.4); }
+      50% { text-shadow: 0 0 18px rgba(201,168,76,0.9), 0 0 30px rgba(201,168,76,0.4); }
+    }
+    .escasez-b {
+      font-size: 0.86rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: #b7881a;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, rgba(201,168,76,0.12), rgba(245,200,66,0.18));
+      border: 1.5px solid rgba(201,168,76,0.5);
+      border-radius: 30px;
+      padding: 8px 18px;
+      animation: glow-gold 2s ease-in-out infinite;
+    }
+    .escasez-b::before { content: '♛'; font-size: 0.75rem; color: var(--oro); }
+
+    /* Título CTA llamativo */
+    @keyframes shimmer-title {
+      0%   { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    .cta-title-b {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 600;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      background: linear-gradient(90deg, #1a1a1a 20%, #c9a84c 50%, #1a1a1a 80%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer-title 4s linear infinite;
+    }
+
+    /* Badge de urgencia en CTA */
+    .urgencia-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #b7881a, #f5c842);
+      color: #1a1a1a;
+      font-weight: 700;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 8px 20px;
+      border-radius: 30px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 20px rgba(201,168,76,0.4);
+    }
+    .urgencia-badge::before { content: '⚡'; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-text { padding: 80px 32px 40px; }
+      .hero-visual { padding: 20px 32px 60px; }
+      .section, .testimonios-section, .faq-section, .cta-section { padding: 70px 32px; }
+      .testimonios-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .hero-text { padding: 60px 24px 30px; }
+      .hero-visual { padding: 16px 24px 50px; }
+      .section, .testimonios-section, .faq-section, .cta-section { padding: 60px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-text">
+      <span class="badge">✦ Para profesionales de la salud</span>
+      <h1>Organiza tu<br>práctica con<br><span>estilo</span></h1>
+      <p class="hero-subtitle">
+        Queen Box es la caja organizadora modular y personalizable diseñada para odontólogos que merecen funcionalidad <em>y</em> elegancia en cada consulta.
+      </p>
+      <div class="hero-cta">
+        <a class="btn-whatsapp-b"
+           href="https://wa.me/524491290919?text=¡Hola!%20Me%20interesa%20mi%20Queen%20Box%20personalizada%20%F0%9F%91%91"
+           target="_blank" rel="noopener">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+            <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.526 5.847L.057 23.982l6.277-1.447C8.01 23.469 9.964 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.883 0-3.638-.514-5.148-1.408l-.369-.219-3.726.859.888-3.619-.241-.373C2.512 15.613 2 13.863 2 12 2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+          </svg>
+          Quiero mi Queen Box personalizada
+        </a>
+        <span class="escasez-b">Primeras 10 unidades con grabado gratuito &nbsp;·&nbsp; Cupo limitado</span>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="box-card">
+        <img
+          class="product-img"
+          src="queen-box.jpg"
+          alt="Queen Box – Caja organizadora profesional personalizada" loading="eager"
+        />
+        <div class="price-tag-b">Desde $1,499 <span>MXN</span></div>
+        <p class="price-note">Precio varía según módulos y personalización</p>
+        <div class="tags">
+          <span class="tag green">Modular</span>
+          <span class="tag gold">✦ Grabado personalizado</span>
+          <span class="tag">Resistente</span>
+          <span class="tag">Ligera</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFICIOS -->
+  <section class="section">
+    <p class="section-label">Por qué Queen Box</p>
+    <h2 class="section-title">Todo lo que tu práctica<br><em>necesita</em>, en una sola caja</h2>
+    <div class="beneficios-grid">
+      <div class="beneficio-card">
+        <div class="beneficio-num">01</div>
+        <h3>Organización personalizada</h3>
+        <p>Compartimentos adaptables a tus instrumentos y materiales específicos.</p>
+      </div>
+      <div class="beneficio-card">
+        <div class="beneficio-num">02</div>
+        <h3>Resistente y segura</h3>
+        <p>Materiales resistentes a golpes y salpicaduras para proteger tu equipo.</p>
+      </div>
+      <div class="beneficio-card">
+        <div class="beneficio-num">03</div>
+        <h3>Diseño premium</h3>
+        <p>Estética elegante y profesional que refleja la calidad de tu práctica.</p>
+      </div>
+      <div class="beneficio-card">
+        <div class="beneficio-num">04</div>
+        <h3>Ligera y práctica</h3>
+        <p>Fácil de transportar sin sacrificar capacidad ni durabilidad.</p>
+      </div>
+      <div class="beneficio-card">
+        <div class="beneficio-num">05</div>
+        <h3>100% personalizable</h3>
+        <p>Elige colores, agrega tu nombre o logo profesional y hazla tuya.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIOS -->
+  <section class="testimonios-section">
+    <p class="section-label" style="color: var(--lima);">Lo que dicen nuestras Queen</p>
+    <h2 class="section-title" style="color: var(--blanco); max-width: 480px;">Profesionales que ya <em>confían</em> en su caja</h2>
+    <div class="testimonios-grid">
+      <div class="testimonio-card">
+        <div class="stars">★★★★★</div>
+        <blockquote>"Desde que uso mi Queen Box, mi material está organizado y mi imagen profesional mejoró muchísimo."</blockquote>
+        <span class="testimonio-autor">— Odontóloga general</span>
+      </div>
+      <div class="testimonio-card">
+        <div class="stars">★★★★★</div>
+        <blockquote>"Me encanta que puedo personalizarla con mi nombre y colores. Es práctica y elegante al mismo tiempo."</blockquote>
+        <span class="testimonio-autor">— Estudiante de odontología</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq-section">
+    <p class="section-label">Resolvemos tus dudas</p>
+    <h2 class="section-title">Preguntas <em>frecuentes</em></h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>¿La caja es resistente a golpes y líquidos?</summary>
+        <p>Sí, está fabricada con materiales resistentes y empaques contra salpicaduras para proteger tu instrumental durante el transporte.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Se puede personalizar?</summary>
+        <p>Sí, puedes elegir colores y agregar grabado de nombre o logo profesional para hacerla completamente tuya.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Cuánto tarda la entrega?</summary>
+        <p>Entre 7 y 15 días hábiles dependiendo del nivel de personalización solicitado.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Cuánto cuesta?</summary>
+        <p>El precio base es desde $1,499 MXN y puede variar según los módulos, nivel de personalización y accesorios que elijas.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="cta-section">
+    <p class="section-label">Únete a la lista de espera</p>
+    <span class="urgencia-badge">Solo quedan pocas unidades</span>
+    <h2 class="cta-title-b">Reserva la tuya antes de que se agoten</h2>
+    <p class="cta-desc">
+      Primeras <strong>10 Queen Box</strong> incluyen grabado personalizado gratuito.<br>Cupo limitado para primera producción.
+    </p>
+    <div class="cta-btn-wrap">
+      <a class="btn-whatsapp-large-b"
+         href="https://wa.me/524491290919?text=¡Hola!%20Me%20interesa%20mi%20Queen%20Box%20personalizada%20%F0%9F%91%91%20Quiero%20registrarme%20en%20la%20lista%20de%20espera."
+         target="_blank" rel="noopener">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+          <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.526 5.847L.057 23.982l6.277-1.447C8.01 23.469 9.964 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.883 0-3.638-.514-5.148-1.408l-.369-.219-3.726.859.888-3.619-.241-.373C2.512 15.613 2 13.863 2 12 2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+        </svg>
+        Quiero mi Queen Box personalizada
+      </a>
+      <span class="cta-garantia">Te contactaremos por WhatsApp para confirmar tu lugar ✦</span>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 Queen Box · Diseñado para profesionales de la salud con 💛</p>
+    <p style="margin-top:8px;">
+      Contacto: <a href="/cdn-cgi/l/email-protection#c3a0a2b0b7a2ada6a7a2edb3a6b1a6b9eda4b3a683a4aea2aaafeda0acae"><span class="__cf_email__" data-cfemail="b5d6d4c6c1d4dbd0d1d49bc5d0c7d0cf9bd2c5d0f5d2d8d4dcd99bd6dad8">[email&#160;protected]</
